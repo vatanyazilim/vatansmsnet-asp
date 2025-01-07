@@ -1,0 +1,16 @@
+# Visual Studio ve ASP.NET Projeleri için .gitignore
+
+# Derleme Klasörleri
+bin/
+obj/
+
+# Kullanıcı Tarayıcı Verileri
+.vscode/
+
+# Diğer Geçici Dosyalar
+*.user
+*.lock
+*.log
+*.suo
+*.unsuccessful
+*.cache
