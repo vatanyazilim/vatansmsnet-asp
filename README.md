@@ -37,8 +37,8 @@ NuGet ile kütüphaneyi yükleyin:
 ### 1. `SendSmsAsync`
 
 1-to-N SMS gönderimi.
-await client.SendSmsAsync(
-
+        
+    await client.SendSmsAsync(
      List<string> phones,
         string message,
         string sender,
