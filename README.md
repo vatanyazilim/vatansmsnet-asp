@@ -1,106 +1,333 @@
 
-# VatanSMS ASP.NET SDK
+  
 
-VatanSMS API'sini ASP.NET projelerinizde kolayca kullanmak için geliştirilmiş bir SDK.
+# VatanSMS .NET SDK
+
+  
+
+VatanSMS API'sini .NET projelerinizde kolayca kullanmak için geliştirilmiş bir SDK.
+
+  
+
+---
+
+  
 
 ## Kurulum
 
+  
+
 NuGet ile kütüphaneyi yükleyin:
 
-    dotnet add package VatanSms.Net
+  
+
+```bash
+dotnet add package VatanSms.Net
+```
+
+  
+
+---
+
+  
+
 ## Kullanım
 
-    using VatanSms;
-    
-    var client = new VatanSmsClient("API_ID", "API_KEY");
-    
-    // 1-to-N SMS Gönderimi
-    var response = await client.SendSmsAsync(
-        new List<string> { "5xxxxxxxxx", "5xxxxxxxxx" },
-        "Bu bir test mesajıdır.",
-        "SMSBASLIGINIZ"
-    );
-    Console.WriteLine(response);
-    
-    // N-to-N SMS Gönderimi
-    var responseNtoN = await client.SendNtoNSmsAsync(
-        new List<Dictionary<string, string>> 
-        {
-            new Dictionary<string, string> { { "phone", "5xxxxxxxxx" }, { "message", "Mesaj 1" } },
-            new Dictionary<string, string> { { "phone", "5xxxxxxxxx" }, { "message", "Mesaj 2" } }
-        },
-        "SMSBASLIGINIZ"
-    );
-    Console.WriteLine(responseNtoN);
-## Yöntemler
+  
 
-### 1. `SendSmsAsync`
+Aşağıda, .NET ile **VatanSMS .NET SDK** kullanılarak API isteklerinin nasıl yapıldığını gösteren örnekler yer almaktadır:
 
-1-to-N SMS gönderimi.
-        
-    await client.SendSmsAsync(
-     List<string> phones,
-        string message,
-        string sender,
-        string messageType = "normal",
-        string messageContentType = "bilgi",
-        DateTime? sendTime = null
-    );
-### 2. `SendNtoNSmsAsync`
+  
 
-N-to-N SMS gönderimi.
+---
 
-    await client.SendNtoNSmsAsync(
-        List<Dictionary<string, string>> phones,
-        string sender,
-        string messageType = "turkce",
-        string messageContentType = "bilgi",
-        DateTime? sendTime = null
-    );
+  
 
-### 3. `GetSenderNamesAsync`
+### 1. 1-to-N SMS Gönderimi
 
-Gönderici adlarını sorgulama.
+**Açıklama:**
 
-    await client.GetSenderNamesAsync();
+Birden fazla numaraya aynı mesajı göndermek için kullanılır.
 
-### 4. `GetUserInformationAsync`
+  
 
-Kullanıcı bilgilerini sorgulama.
+**Parametreler:**
 
-    await client.GetUserInformationAsync();
+-  `List<string> phones`: Mesaj gönderilecek telefon numaralarının listesi.
 
-### 5. `GetReportDetailAsync`
+-  `string message`: Gönderilecek mesaj içeriği.
 
-Rapor detayı sorgulama.
+-  `string sender`: Gönderici adı (örneğin, "FIRMA").
 
-    await client.GetReportDetailAsync(int reportId, int page = 1, int pageSize = 20);
+-  `string messageType`: Mesaj türü, varsayılan olarak "normal".
 
-### 6. `GetReportsByDateAsync`
+-  `string messageContentType`: Mesaj içerik türü, örneğin "bilgi" veya "ticari".
 
-Tarih bazlı rapor sorgulama.
+-  `DateTime? sendTime`: Mesajın gönderileceği tarih ve saat. Varsayılan olarak hemen gönderilir.
 
-    await client.GetReportsByDateAsync(string startDate, string endDate);
+  
 
-### 7. `GetReportStatusAsync`
+**Örnek Kullanım:**
 
-Sonuç sorgusu.
+```csharp
+var response = await client.SendSmsAsync(
+    new List<string> { "5xxxxxxxxx", "5xxxxxxxxx" },
+    "Bu bir test mesajıdır.",
+    "SMSBASLIGINIZ"
+);
+Console.WriteLine(response);
+```
 
-    await client.GetReportStatusAsync(int reportId);
+  
 
-### 8. `CancelFutureSmsAsync`
+---
 
-İleri tarihli SMS iptali.
+  
 
-    await client.CancelFutureSmsAsync(int id);
+### 2. N-to-N SMS Gönderimi
+
+**Açıklama:**
+
+Her telefon numarasına farklı mesajlar göndermek için kullanılır.
+
+  
+
+**Parametreler:**
+
+-  `List<Dictionary<string, string>> phones`: Telefon numaralarını ve mesajlarını içeren bir liste.
+
+Her eleman `new Dictionary<string, string> { { "phone", "..." }, { "message", "..." } }` şeklinde olmalıdır.
+
+-  `string sender`: Gönderici adı.
+
+-  `string messageType`: Mesaj türü, varsayılan olarak "turkce".
+
+-  `string messageContentType`: Mesaj içerik türü, örneğin "bilgi" veya "ticari".
+
+-  `DateTime? sendTime`: Mesajın gönderileceği tarih ve saat. Varsayılan olarak hemen gönderilir.
+
+  
+
+**Örnek Kullanım:**
+
+```csharp
+var response = await client.SendNtoNSmsAsync(
+    new List<Dictionary<string, string>> 
+    {
+        new Dictionary<string, string> { { "phone", "5xxxxxxxxx" }, { "message", "Mesaj 1" } },
+        new Dictionary<string, string> { { "phone", "5xxxxxxxxx" }, { "message", "Mesaj 2" } }
+    },
+    "SMSBASLIGINIZ"
+);
+Console.WriteLine(response);
+```
+
+  
+
+---
+
+  
+
+### 3. **`GetSenderNamesAsync`** - Gönderici Adlarını Sorgulama
+
+  
+
+**Açıklama:**
+
+Hesabınıza tanımlı gönderici adlarını sorgulamak için kullanılır.
+
+  
+
+**Parametreler:**
+
+Hiçbir parametre almaz.
+
+  
+
+**Örnek Kullanım:**
+
+```csharp
+var response = await client.GetSenderNamesAsync();
+Console.WriteLine(response);
+```
+
+  
+
+---
+
+  
+
+### 4. **`GetUserInformationAsync`** - Kullanıcı Bilgilerini Sorgulama
+
+  
+
+**Açıklama:**
+
+Hesap bilgilerinizi sorgulamak için kullanılır.
+
+  
+
+**Parametreler:**
+
+Hiçbir parametre almaz.
+
+  
+
+**Örnek Kullanım:**
+
+```csharp
+var  response  =  await client.GetUserInformationAsync();
+Console.WriteLine(response);
+```
+
+  
+
+---
+
+  
+
+### 5. **`GetReportDetailAsync`** - Rapor Detayı Sorgulama
+
+  
+
+**Açıklama:**
+
+Belirli bir raporun detaylarını sorgulamak için kullanılır.
+
+  
+
+**Parametreler:**
+
+-  `int reportId`: Sorgulanacak raporun ID'si.
+
+-  `int page`: Sayfa numarası, varsayılan olarak 1.
+
+-  `int pageSize`: Bir sayfada gösterilecek rapor sayısı, varsayılan olarak 20.
+
+  
+
+**Örnek Kullanım:**
+
+```csharp
+var  response  =  await client.GetReportDetailAsync(123456);
+Console.WriteLine(response);
+```
+
+  
+
+---
+
+  
+
+### 6. **`GetReportsByDateAsync`** - Tarih Bazlı Rapor Sorgulama
+
+  
+
+**Açıklama:**
+
+Belirli bir tarih aralığındaki raporları sorgulamak için kullanılır.
+
+  
+
+**Parametreler:**
+
+-  `string startDate`: Başlangıç tarihi (örneğin, "2023-01-01").
+
+-  `string endDate`: Bitiş tarihi (örneğin, "2023-12-31").
+
+  
+
+**Örnek Kullanım:**
+
+```csharp
+var  response  =  await client.GetReportsByDateAsync("2023-01-01",  "2023-12-31");
+Console.WriteLine(response);
+```
+
+  
+
+---
+
+  
+
+### 7. **`GetReportStatusAsync`** - Sonuç Sorgusu
+
+  
+
+**Açıklama:**
+
+Gönderilen bir raporun durumunu sorgulamak için kullanılır.
+
+  
+
+**Parametreler:**
+
+-  `int reportId`: Sorgulanacak raporun ID'si.
+
+  
+
+**Örnek Kullanım:**
+
+```csharp
+var  response  =  await client.GetReportStatusAsync(123456);
+Console.WriteLine(response);
+```
+
+  
+
+---
+
+  
+
+### 8. **`CancelFutureSmsAsync`** - İleri Tarihli SMS İptali
+
+  
+
+**Açıklama:**
+
+Zamanlanmış bir SMS gönderimini iptal etmek için kullanılır.
+
+  
+
+**Parametreler:**
+
+-  `int id`: İptal edilecek SMS'in ID'si.
+
+  
+
+**Örnek Kullanım:**
+
+```csharp
+var  response  =  await client.CancelFutureSmsAsync(123);
+Console.WriteLine(response);
+```
+
+  
+
+---
+
+  
 
 ## Testler
 
+  
+
 Testleri çalıştırmak için şu komutu kullanabilirsiniz:
 
-    dotnet test
+  
 
+```bash
+dotnet test
+```
 
+  
 
+---
 
+  
 
+## Lisans
+
+  
+
+Bu SDK, MIT lisansı ile lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına göz atabilirsiniz.
