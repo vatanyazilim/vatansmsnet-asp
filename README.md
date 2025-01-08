@@ -22,7 +22,7 @@ NuGet ile kütüphaneyi yükleyin:
   
 
 ```bash
-dotnet add package VatanSms.Net
+dotnet add package VatanSoft.VatanSms.Net
 ```
 
   
